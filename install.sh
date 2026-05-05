@@ -62,4 +62,5 @@ echo "正在为您首次启动控制台..."
 sleep 3
 
 # 直接调用全局别名启动
+exec < /dev/tty
 aitool
