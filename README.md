@@ -53,12 +53,12 @@
 
 **通过 cURL 安装**：
 ```bash
-sudo bash <(curl -sL https://raw.githubusercontent.com/qiqi-style/AI_Proxy_Tools/main/install.sh)
+curl -sL https://raw.githubusercontent.com/qiqi-style/AI_Proxy_Tools/main/install.sh | sudo bash
 ```
 
 **通过 Wget 安装**：
 ```bash
-sudo bash <(wget -qO- https://raw.githubusercontent.com/qiqi-style/AI_Proxy_Tools/main/install.sh)
+wget -qO- https://raw.githubusercontent.com/qiqi-style/AI_Proxy_Tools/main/install.sh | sudo bash
 ```
 
 🎉 **安装成功后，无论您身处服务器的哪个目录，随时输入 `aitool` 即可一键唤出控制台！**

@@ -12,7 +12,7 @@ echo "========================================================"
 
 if [ "$EUID" -ne 0 ]; then
     echo "❌ 错误: 本套件涉及系统级操作，请使用管理员权限(sudo)运行！"
-    echo "💡 示例: sudo bash <(curl -sL https://raw.githubusercontent.com/qiqi-style/AI_Proxy_Tools/main/install.sh)"
+    echo "💡 示例: curl -sL https://raw.githubusercontent.com/qiqi-style/AI_Proxy_Tools/main/install.sh | sudo bash"
     exit 1
 fi
 
