@@ -16,7 +16,7 @@ pink(){ printf "\033[38;5;211m%s\033[0m\n" "$1";}
 green(){ printf "\033[38;5;118m%s\033[0m\n" "$1";}
 yellow(){ printf "\033[38;5;208m%s\033[0m\n" "$1";}
 red(){ printf "\033[38;5;211m%s\033[0m\n" "$1";}
-readp(){ IFS='' read -r -p "$(echo -e "\033[38;5;211m$1\033[0m")" $2;}
+readp(){ IFS='' read -r -p "$(echo -e "\033[38;5;211m$1\033[0m")" $2 < /dev/tty;}
 
 # 获取基础目录
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

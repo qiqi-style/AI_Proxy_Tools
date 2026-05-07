@@ -19,7 +19,7 @@ yellow(){ printf "\033[38;5;208m%s\033[0m\n" "$1";}
 white(){ printf "\033[0m%s\033[0m\n" "$1";}
 blue(){ printf "\033[38;5;118m%s\033[0m\n" "$1";}
 red(){ printf "\033[38;5;211m%s\033[0m\n" "$1";}
-readp(){ IFS='' read -r -p "$(echo -e "\033[38;5;211m$1\033[0m")" $2;}
+readp(){ IFS='' read -r -p "$(echo -e "\033[38;5;211m$1\033[0m")" $2 < /dev/tty;}
 
 # 获取当前脚本所在目录
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

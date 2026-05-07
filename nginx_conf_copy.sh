@@ -7,6 +7,13 @@
 BASE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 TARGET_BASE_DIR="/app"
 
+# 颜色与辅助函数
+pink(){ printf "\033[38;5;211m%s\033[0m\n" "$1";}
+green(){ printf "\033[38;5;118m%s\033[0m\n" "$1";}
+yellow(){ printf "\033[38;5;208m%s\033[0m\n" "$1";}
+red(){ printf "\033[38;5;211m%s\033[0m\n" "$1";}
+readp(){ IFS='' read -r -p "$(echo -e "\033[38;5;211m$1\033[0m")" $2 < /dev/tty;}
+
 # 检查项目是否已安装 (通过 docker-compose.yml)
 check_installed() {
     local project=$1
@@ -117,7 +124,7 @@ while true; do
     echo " ----------------------------------------------------------------"
     echo " 0. 返回主菜单"
     echo "================================================================="
-    read -p " 请选择操作选项 [0-6]: " choice
+    readp " 请选择操作选项 [0-6]: " choice
     
     project=""
     conf_file=""
@@ -138,7 +145,7 @@ while true; do
     # 强制让用户提供 NGINX_DIR
     if [ -z "$NGINX_DIR" ] || [ ! -d "$NGINX_DIR" ]; then
         echo ""
-        read -p "❌ 自动搜寻 Nginx 目录失败，请手动输入配置目录路径 (如 /etc/nginx): " NGINX_DIR
+        readp "❌ 自动搜寻 Nginx 目录失败，请手动输入配置目录路径 (如 /etc/nginx): " NGINX_DIR
         # 手动输入后修正
         if [ -d "$NGINX_DIR/conf" ] && [ -f "$NGINX_DIR/conf/nginx.conf" ]; then
             NGINX_DIR="$NGINX_DIR/conf"
@@ -158,7 +165,7 @@ while true; do
         echo "========================================================"
         if [ -f "$NGINX_DIR/conf.d/$conf_file" ]; then
             echo ">>> 找到配置: $NGINX_DIR/conf.d/$conf_file"
-            read -p "⚠️ 确认要彻底删除 $project 的 Nginx 配置吗？[y/N]: " del_conf
+            readp "⚠️ 确认要彻底删除 $project 的 Nginx 配置吗？[y/N]: " del_conf
             if [[ "$del_conf" =~ ^[Yy]$ ]]; then
                 rm -f "$NGINX_DIR/conf.d/$conf_file"
                 echo "✅ $project 的 Nginx 配置已彻底删除。"
@@ -170,7 +177,7 @@ while true; do
             echo "提示: 未找到 $project 的相关配置，可能尚未部署。"
         fi
         echo "========================================================"
-        read -p "按回车键返回菜单..."
+        readp "按回车键返回菜单..." dummy
         continue
     fi
 
@@ -178,7 +185,7 @@ while true; do
     if ! check_installed "$project"; then
         echo ""
         echo "⚠️ 警告: 检测到项目 $project 似乎未安装！"
-        read -p "是否强制继续生成其 Nginx 配置？[y/N]: " force_cont
+        readp "是否强制继续生成其 Nginx 配置？[y/N]: " force_cont
         if [[ ! "$force_cont" =~ ^[Yy]$ ]]; then
             continue
         fi
@@ -216,19 +223,19 @@ while true; do
     echo "--------------------------------------------------------"
     
     # 交互式输入，若留空则保留原来的值
-    read -p "1. 绑定的公网域名 [当前: ${current_domain:-未配置}]: " domain
+    readp "1. 绑定的公网域名 [当前: ${current_domain:-未配置}]: " domain
     domain=${domain:-$current_domain}
     
-    read -p "2. 本地代理转发端口 (内部服务) [当前: ${current_port}]: " port
+    readp "2. 本地代理转发端口 (内部服务) [当前: ${current_port}]: " port
     port=${port:-$current_port}
     
-    read -p "3. 外网访问监听端口 [当前: ${current_ext_port}]: " ext_port
+    readp "3. 外网访问监听端口 [当前: ${current_ext_port}]: " ext_port
     ext_port=${ext_port:-$current_ext_port}
     
-    read -p "4. SSL证书文件(crt/pem)绝对路径 [当前: ${current_cert:-未配置}]: " ssl_cert
+    readp "4. SSL证书文件(crt/pem)绝对路径 [当前: ${current_cert:-未配置}]: " ssl_cert
     ssl_cert=${ssl_cert:-$current_cert}
     
-    read -p "5. SSL私钥文件(key)绝对路径 [当前: ${current_key:-未配置}]: " ssl_key
+    readp "5. SSL私钥文件(key)绝对路径 [当前: ${current_key:-未配置}]: " ssl_key
     ssl_key=${ssl_key:-$current_key}
     
     if [ -z "$domain" ] || [ -z "$ssl_cert" ] || [ -z "$ssl_key" ]; then
@@ -277,5 +284,5 @@ while true; do
     echo "🎉 $project 配置文件处理完毕！"
     reload_nginx
     echo "========================================================"
-    read -p "按回车键返回 Nginx 部署菜单..."
+    readp "按回车键返回 Nginx 部署菜单..." dummy
 done
